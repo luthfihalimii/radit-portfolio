@@ -1,0 +1,21 @@
+---
+import * as about from "../content/about/about.md";
+
+const getYear = () => new Date().getFullYear().toString();
+const website = about.frontmatter.website;
+const hasWebsite = typeof website === "string" && /^https?:\/\//.test(website);
+---
+
+<footer class="mx-auto flex w-[95vw] max-w-3xl flex-col items-center gap-2 border-t border-base-300/70 py-6 text-center text-sm text-secondary">
+  <p>&copy; {getYear()} {about.frontmatter.name}. Dibangun dengan Astro dan Tailwind CSS.</p>
+  {hasWebsite && (
+    <a
+      href={website}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 underline-offset-4 transition hover:text-base-content hover:underline"
+    >
+      <span>{website}</span>
+    </a>
+  )}
+</footer>

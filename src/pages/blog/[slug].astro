@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+type BlogModule = {
+  frontmatter: {
+    title: string;
+    date?: string;
+  };
+  compiledContent: () => string;
+};
+
+export function getStaticPaths() {
+  const blogs = import.meta.glob("../../content/blogs/*.md", {
+    eager: true,
+  }) as Record<string, BlogModule>;
+  const getSlugFromPath = (path: string) =>
+    path.split("/").pop()?.replace(/\.md$/, "") ?? "";
+
+  return Object.entries(blogs).map(([path, blog]) => ({
+    params: { slug: getSlugFromPath(path) },
+    props: {
+      blog,
+      slug: getSlugFromPath(path),
+    },
+  }));
+}
+
+const { blog } = Astro.props as { blog: BlogModule; slug: string };
+const title = `${blog.frontmatter.title} | Blog`;
+---
+
+<BaseLayout
+  title={title}
+  description={blog.frontmatter.title}
+  lang="id"
+  type="article"
+>
+  <main class="mx-auto flex min-h-screen w-[95vw] max-w-3xl flex-col py-10">
+    <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm text-secondary">
+      <a href="/" class="underline-offset-4 transition hover:text-base-content hover:underline">
+        Portfolio
+      </a>
+      <span>/</span>
+      <span>Blog</span>
+      <span>/</span>
+      <span class="text-base-content">{blog.frontmatter.title}</span>
+    </nav>
+
+    <a
+      href="/"
+      class="mb-6 inline-flex w-fit items-center gap-2 text-sm text-secondary underline-offset-4 transition hover:text-base-content hover:underline"
+    >
+      <span>&larr;</span>
+      <span>Kembali ke portfolio</span>
+    </a>
+
+    <article class="rounded-3xl border border-base-300/70 bg-base-100/80 p-7 shadow-sm md:p-9">
+      <div class="mb-6 space-y-2">
+        <p class="text-sm uppercase tracking-[0.2em] text-secondary">Catatan</p>
+        <h1 class="text-3xl font-extrabold tracking-tight md:text-4xl">
+          {blog.frontmatter.title}
+        </h1>
+        {blog.frontmatter.date && (
+          <p class="text-sm text-secondary">{blog.frontmatter.date}</p>
+        )}
+      </div>
+
+      <div class="prose prose-neutral max-w-none text-secondary">
+        <Fragment set:html={blog.compiledContent()} />
+      </div>
+    </article>
+  </main>
+</BaseLayout>

@@ -1,0 +1,173 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  timeframe?: string;
+  title: string;
+  description?: string;
+  url?: string;
+  tags?: string[];
+  url_name?: string;
+  location?: string;
+  linkTitle?: boolean;
+  clickableCard?: boolean;
+}
+
+const {
+  timeframe,
+  title,
+  description,
+  url,
+  tags = [],
+  url_name,
+  location,
+  linkTitle = false,
+  clickableCard = false,
+} = Astro.props as Props;
+
+const hasDescription = typeof description === "string" && description.trim().length > 0;
+const isExternalUrl = typeof url === "string" && /^(https?:\/\/|mailto:|tel:)/.test(url);
+const isInternalUrl = typeof url === "string" && url.startsWith("/");
+const hasUrl = isExternalUrl || isInternalUrl;
+const hasActionLink = hasUrl && typeof url_name === "string" && url_name.trim().length > 0;
+const hasClickableCard = clickableCard && hasUrl && !hasActionLink;
+
+const wrapperClass = hasClickableCard
+  ? "block rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-base-content/30"
+  : undefined;
+---
+
+<article class:list={[
+  "card card-bordered mb-4 rounded-3xl border border-secondary/70 bg-base-100/70 shadow-sm transition-all last:mb-0 hover:-translate-y-0.5 hover:shadow-lg",
+  hasClickableCard &&
+    "group relative cursor-pointer overflow-hidden hover:border-base-content/15 hover:bg-base-100",
+]}>
+  {
+    hasClickableCard ? (
+      <a
+        href={url}
+        target={isExternalUrl ? "_blank" : undefined}
+        rel={isExternalUrl ? "noopener noreferrer" : undefined}
+        aria-label={`Buka ${title}`}
+        class={wrapperClass}
+      >
+        <div class="card-body gap-5 p-7 md:p-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="space-y-2 text-left">
+              <h3 class="card-title text-xl font-extrabold tracking-tight md:text-2xl">
+                <span class="inline-flex items-center gap-2">
+                  <span>{title}</span>
+                  <Icon
+                    name="carbon:arrow-up-right"
+                    aria-hidden="true"
+                    class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </span>
+              </h3>
+              {location && (
+                <div class="flex items-center gap-1 text-sm font-light text-secondary">
+                  <Icon name="carbon:location" aria-hidden="true" class="h-4 w-4" />
+                  <p>{location}</p>
+                </div>
+              )}
+            </div>
+
+            {timeframe && (
+              <div class="badge h-max w-max badge-outline text-center font-mono shadow-sm">
+                {timeframe}
+              </div>
+            )}
+          </div>
+
+          {hasDescription && (
+            <div class="text-left">
+              <article class="prose prose-sm max-w-none text-secondary">
+                <Fragment set:html={description}></Fragment>
+              </article>
+            </div>
+          )}
+
+          {Array.isArray(tags) && tags.length > 0 && (
+            <div class="flex flex-wrap gap-2.5 text-left">
+              {tags.map((item) => (
+                <span class="badge h-max w-max badge-outline text-sm shadow-sm">{item}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </a>
+    ) : (
+      <div class="card-body gap-5 p-7 md:p-8">
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div class="space-y-2 text-left">
+            {
+              linkTitle && hasUrl ? (
+                <h3 class="card-title text-xl font-extrabold tracking-tight md:text-2xl">
+                  <a
+                    href={url}
+                    target={isExternalUrl ? "_blank" : undefined}
+                    rel={isExternalUrl ? "noopener noreferrer" : undefined}
+                    class="inline-flex items-center gap-2 underline-offset-4 transition hover:text-base-content hover:underline"
+                  >
+                    <span>{title}</span>
+                    <Icon
+                      name="carbon:arrow-up-right"
+                      aria-hidden="true"
+                      class="h-4 w-4 transition-transform"
+                    />
+                  </a>
+                </h3>
+              ) : (
+                <h3 class="card-title text-xl font-extrabold tracking-tight md:text-2xl">
+                  {title}
+                </h3>
+              )
+            }
+            {location && (
+              <div class="flex items-center gap-1 text-sm font-light text-secondary">
+                <Icon name="carbon:location" aria-hidden="true" class="h-4 w-4" />
+                <p>{location}</p>
+              </div>
+            )}
+          </div>
+
+          {timeframe && (
+            <div class="badge h-max w-max badge-outline text-center font-mono shadow-sm">
+              {timeframe}
+            </div>
+          )}
+        </div>
+
+        {hasDescription && (
+          <div class="text-left">
+            <article class="prose prose-sm max-w-none text-secondary">
+              <Fragment set:html={description}></Fragment>
+            </article>
+          </div>
+        )}
+
+        {Array.isArray(tags) && tags.length > 0 && (
+          <div class="flex flex-wrap gap-2.5 text-left">
+            {tags.map((item) => (
+              <span class="badge h-max w-max badge-outline text-sm shadow-sm">{item}</span>
+            ))}
+          </div>
+        )}
+
+        {hasActionLink && (
+          <div class="card-actions justify-end">
+            <a
+              href={url}
+              target={isExternalUrl ? "_blank" : undefined}
+              rel={isExternalUrl ? "noopener noreferrer" : undefined}
+              class="inline-flex items-center gap-2 text-sm underline-offset-4 transition hover:text-base-content hover:underline"
+            >
+              <span>{url_name}</span>
+              <Icon name="carbon:link" aria-hidden="true" class="h-4 w-4" />
+            </a>
+          </div>
+        )}
+      </div>
+    )
+  }
+</article>

@@ -1,0 +1,116 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+type ContentModule = {
+  frontmatter: {
+    title: string;
+    date?: string;
+    tags?: string[];
+    location?: string;
+  };
+  compiledContent: () => string;
+};
+
+type DetailPageProps = {
+  section: string;
+  entry: ContentModule;
+};
+
+export function getStaticPaths() {
+  const sources = {
+    works: import.meta.glob("../../../content/works/*.md", { eager: true }),
+    studies: import.meta.glob("../../../content/studies/*.md", { eager: true }),
+    projects: import.meta.glob("../../../content/projects/*.md", { eager: true }),
+    certificates: import.meta.glob("../../../content/certificates/*.md", {
+      eager: true,
+    }),
+  } as Record<string, Record<string, ContentModule>>;
+
+  const getSlugFromPath = (path: string) =>
+    path.split("/").pop()?.replace(/\.md$/, "") ?? "";
+
+  return Object.entries(sources).flatMap(([section, entries]) =>
+    Object.entries(entries).map(([path, entry]) => ({
+      params: {
+        section,
+        slug: getSlugFromPath(path),
+      },
+      props: {
+        section,
+        entry,
+      },
+    })),
+  );
+}
+
+const { section, entry } = Astro.props as DetailPageProps;
+const pageTitle = `${entry.frontmatter.title} | ${section}`;
+const sectionLabelMap: Record<string, string> = {
+  works: "Aktivitas",
+  studies: "Pendidikan",
+  projects: "Proyek",
+  certificates: "Fokus Belajar",
+};
+const sectionLabel = sectionLabelMap[section] ?? section;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={entry.frontmatter.title}
+  lang="id"
+  type="article"
+>
+  <main class="mx-auto flex min-h-screen w-[95vw] max-w-3xl flex-col py-10">
+    <nav class="mb-6 flex flex-wrap items-center gap-2 text-sm text-secondary">
+      <a href="/" class="underline-offset-4 transition hover:text-base-content hover:underline">
+        Portfolio
+      </a>
+      <span>/</span>
+      <span>{sectionLabel}</span>
+      <span>/</span>
+      <span class="text-base-content">{entry.frontmatter.title}</span>
+    </nav>
+
+    <a
+      href="/"
+      class="mb-6 inline-flex w-fit items-center gap-2 text-sm text-secondary underline-offset-4 transition hover:text-base-content hover:underline"
+    >
+      <span>&larr;</span>
+      <span>Kembali ke portfolio</span>
+    </a>
+
+    <article class="rounded-3xl border border-base-300/70 bg-base-100/80 p-7 shadow-sm md:p-9">
+      <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div class="space-y-2">
+          <p class="text-sm uppercase tracking-[0.2em] text-secondary">
+            {sectionLabel}
+          </p>
+          <h1 class="text-3xl font-extrabold tracking-tight md:text-4xl">
+            {entry.frontmatter.title}
+          </h1>
+          {entry.frontmatter.location && (
+            <p class="text-sm text-secondary">{entry.frontmatter.location}</p>
+          )}
+        </div>
+
+        {entry.frontmatter.date && (
+          <div class="badge h-max w-max badge-outline font-mono shadow-sm">
+            {entry.frontmatter.date}
+          </div>
+        )}
+      </div>
+
+      <div class="prose prose-neutral max-w-none text-secondary">
+        <Fragment set:html={entry.compiledContent()} />
+      </div>
+
+      {entry.frontmatter.tags && entry.frontmatter.tags.length > 0 && (
+        <div class="mt-8 flex flex-wrap gap-2.5">
+          {entry.frontmatter.tags.map((tag) => (
+            <span class="badge h-max w-max badge-outline text-sm shadow-sm">{tag}</span>
+          ))}
+        </div>
+      )}
+    </article>
+  </main>
+</BaseLayout>

@@ -1,0 +1,192 @@
+---
+import { Icon } from "astro-icon/components";
+import AccordionLayout from "../layouts/AccordionLayout.astro";
+import * as about from "../content/about/about.md";
+import Card from "./Card.astro";
+import ContactCard from "./ContactCard.astro";
+
+type MarkdownInstance = {
+  frontmatter: {
+    title: string;
+    date?: string;
+    tags?: string[];
+    url?: string;
+    org?: string;
+    location?: string;
+    institute?: string;
+    url_name?: string;
+    icon?: string;
+  };
+  compiledContent: () => string;
+};
+
+const works = Object.entries(import.meta.glob("../content/works/*.md", { eager: true })) as [string, MarkdownInstance][];
+const projects = Object.entries(import.meta.glob("../content/projects/*.md", { eager: true })) as [string, MarkdownInstance][];
+const studies = Object.entries(import.meta.glob("../content/studies/*.md", { eager: true })) as [string, MarkdownInstance][];
+const certificates = Object.entries(import.meta.glob("../content/certificates/*.md", { eager: true })) as [string, MarkdownInstance][];
+const blogEntries = Object.entries(import.meta.glob("../content/blogs/*.md", { eager: true })) as [string, MarkdownInstance][];
+const contact = Object.values(import.meta.glob("../content/contact/*.md", { eager: true })) as MarkdownInstance[];
+const PDF = "/raditya-zacky-nugroho-resume.pdf";
+const isValidUrl = (url?: string) => typeof url === "string" && /^(https?:\/\/|mailto:|tel:)/.test(url);
+const visibleContact = contact.filter((item) => isValidUrl(item.frontmatter.url));
+const getSlugFromPath = (path: string) =>
+  path.split("/").pop()?.replace(/\.md$/, "") ?? "";
+const getDetailPath = (section: string, path: string) =>
+  `/detail/${section}/${getSlugFromPath(path)}`;
+---
+
+<div class="flex w-full flex-col gap-4">
+  <AccordionLayout title={"Tentang Saya"} icon={"carbon:identification"} open={true}>
+    <article class="text-justify">
+      <Fragment set:html={about.compiledContent()} />
+    </article>
+  </AccordionLayout>
+
+  <AccordionLayout title={"Aktivitas"} icon={"carbon:construction"}>
+    {
+      works.map(([path, item]) => {
+        const resolvedUrl = item.frontmatter.url || getDetailPath("works", path);
+        return (
+          <Card
+            title={item.frontmatter.title}
+            timeframe={item.frontmatter.date}
+            description={item.compiledContent()}
+            tags={item.frontmatter.tags}
+            url={resolvedUrl}
+            url_name={item.frontmatter.url ? item.frontmatter.org : undefined}
+            location={item.frontmatter.location}
+            linkTitle={true}
+            clickableCard={true}
+          />
+        );
+      })
+    }
+  </AccordionLayout>
+
+  <AccordionLayout title={"Pendidikan"} icon={"carbon:education"}>
+    {
+      studies.map(([path, item]) => {
+        const resolvedUrl = item.frontmatter.url || getDetailPath("studies", path);
+        return (
+          <Card
+            title={item.frontmatter.title}
+            timeframe={item.frontmatter.date}
+            description={item.compiledContent()}
+            location={item.frontmatter.location}
+            tags={item.frontmatter.tags}
+            url={resolvedUrl}
+            url_name={item.frontmatter.url ? item.frontmatter.institute : undefined}
+            linkTitle={true}
+            clickableCard={true}
+          />
+        );
+      })
+    }
+  </AccordionLayout>
+
+  <AccordionLayout title={"Proyek"} icon={"carbon:tools"}>
+    {
+      projects.map(([path, item]) => {
+        const resolvedUrl = item.frontmatter.url || getDetailPath("projects", path);
+        return (
+          <Card
+            title={item.frontmatter.title}
+            timeframe={item.frontmatter.date}
+            description={item.compiledContent()}
+            tags={item.frontmatter.tags}
+            url={resolvedUrl}
+            url_name={item.frontmatter.url ? "Lihat proyek" : undefined}
+            linkTitle={true}
+            clickableCard={true}
+          />
+        );
+      })
+    }
+  </AccordionLayout>
+
+  <AccordionLayout title={"Fokus Belajar"} icon={"carbon:certificate"}>
+    {
+      certificates.map(([path, item]) => {
+        const resolvedUrl =
+          item.frontmatter.url || getDetailPath("certificates", path);
+        return (
+          <Card
+            title={item.frontmatter.title}
+            timeframe={item.frontmatter.date}
+            description={item.compiledContent()}
+            tags={item.frontmatter.tags}
+            url={resolvedUrl}
+            url_name={item.frontmatter.url ? "Lihat detail" : undefined}
+            linkTitle={true}
+            clickableCard={true}
+          />
+        );
+      })
+    }
+  </AccordionLayout>
+
+  <AccordionLayout title={"Catatan"} icon={"carbon:pen"}>
+    {
+      blogEntries.map(([path, item]) => {
+        const slug = getSlugFromPath(path);
+        return (
+          <Card
+            title={item.frontmatter.title}
+            timeframe={item.frontmatter.date}
+            description={item.compiledContent()}
+            url={item.frontmatter.url || `/blog/${slug}`}
+            linkTitle={true}
+            clickableCard={true}
+          />
+        );
+      })
+    }
+  </AccordionLayout>
+
+  <AccordionLayout title={"Dokumen"} icon={"carbon:volume-file-storage"}>
+    <div class="flex justify-center w-full">
+      <div
+        class="card card-compact card-bordered w-full border-secondary/70 bg-base-100/70 shadow-sm transition-all hover:shadow-lg"
+      >
+        <figure>
+          <object data={PDF} type="application/pdf" width="100%" class="min-h-96">
+            <p class="p-4 text-sm text-secondary">
+              Browser ini tidak mendukung pratinjau PDF. Gunakan tombol unduh di bawah.
+            </p>
+          </object>
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title">Resume</h2>
+          <p>Lihat atau unduh resume terbaru melalui tombol di bawah ini.</p>
+          <div class="card-actions justify-end">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={PDF}
+              class="btn btn-outline"
+            >
+              <span>Unduh resume</span>
+              <Icon name="carbon:document-pdf" class="h-6 w-6" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </AccordionLayout>
+
+  <AccordionLayout title={"Kontak"} icon={"carbon:location-person"}>
+    <div class="flex flex-wrap content-around gap-4 justify-center">
+      {
+        visibleContact.map((item) => {
+          return (
+            <ContactCard
+              url={item.frontmatter.url}
+              url_name={item.frontmatter.title}
+              icon={item.frontmatter.icon}
+            />
+          );
+        })
+      }
+    </div>
+  </AccordionLayout>
+</div>

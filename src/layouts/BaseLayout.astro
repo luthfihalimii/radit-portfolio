@@ -1,0 +1,76 @@
+---
+import "@fontsource-variable/dm-sans";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: string;
+  image?: string;
+  type?: "website" | "article";
+}
+
+const {
+  title = "Raditya Zacky Nugroho | Portfolio",
+  description =
+    "Portfolio pribadi Raditya Zacky Nugroho yang merangkum profil, pendidikan, minat, dan proyek pembelajaran.",
+  lang = "id",
+  image = "/og-cover.svg",
+  type = "website",
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL("https://www.radityazcky.my.id");
+const canonical = new URL(Astro.url.pathname, siteUrl);
+const socialImage = new URL(image, siteUrl);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.webp" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#111111" />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:site_name" content="Radit Portfolio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <title>{title}</title>
+    <script is:inline>
+      const savedTheme = localStorage.getItem("theme");
+      document.documentElement.setAttribute("data-theme", savedTheme ?? "lofi");
+    </script>
+    <script>
+      import { themeChange } from "theme-change";
+      themeChange();
+    </script>
+  </head>
+  <body class="min-h-screen antialiased">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "DM Sans Variable", sans-serif;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, currentColor 18%, transparent);
+  }
+</style>

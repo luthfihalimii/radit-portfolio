@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { Icon } from "astro-icon/components";
+import * as about from "../content/about/about.md";
+
+const title = `${about.frontmatter.name} - ${about.frontmatter.designation}`;
+const description =
+  "Portfolio pribadi Raditya Zacky Nugroho yang merangkum profil, pendidikan, minat, dan proyek pembelajaran.";
+---
+
+<BaseLayout title={title} description={description} lang="id">
+  <Header />
+  <div
+    class="fixed top-4 right-4 z-20 flex items-center rounded-full border border-base-300/70 bg-base-100/80 px-3 py-2 shadow-sm backdrop-blur md:top-6 md:right-6"
+  >
+    <Icon name="carbon:moon" aria-hidden="true" class="h-4 w-4" />
+    <input
+      type="checkbox"
+      data-toggle-theme="black,lofi"
+      data-act-class="ACTIVECLASS"
+      class="toggle theme-toggle toggle-sm mx-2"
+      aria-label="Ganti tema"
+      title="Ganti tema"
+    />
+    <Icon name="carbon:light" aria-hidden="true" class="h-4 w-4" />
+  </div>
+
+  <div
+    class="divider mx-auto h-fit max-w-3xl w-[95vw] flex flex-nowrap bg-secondary"
+  >
+  </div>
+  <main class="mx-auto flex-grow max-w-3xl py-4 w-[95vw]">
+    <Container />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .theme-toggle {
+    background: #e5e7eb;
+    border-color: #d4d4d8;
+    color: #ffffff;
+  }
+
+  .theme-toggle:checked {
+    background: #60a5fa;
+    border-color: #60a5fa;
+    color: #ffffff;
+  }
+
+  :global([data-theme="black"]) .theme-toggle {
+    background: #3f3f46;
+    border-color: #52525b;
+    color: #ffffff;
+  }
+
+  :global([data-theme="black"]) .theme-toggle:checked {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    color: #18181b;
+  }
+</style>

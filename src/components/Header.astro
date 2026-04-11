@@ -1,0 +1,57 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import * as about from "../content/about/about.md";
+import profileImage from "../assets/profile.webp";
+
+const website = about.frontmatter.website;
+const hasWebsite = typeof website === "string" && /^https?:\/\//.test(website);
+---
+
+<header class="mx-auto max-w-3xl px-4 pt-8 pb-4">
+  <article class="flex flex-col items-center gap-4 text-center">
+    <div class="w-24 overflow-hidden rounded-full shadow-sm ring ring-base-300 md:w-28">
+      <Image
+        alt={about.frontmatter.name}
+        src={profileImage}
+        width={160}
+        height={160}
+        loading="eager"
+        class="aspect-square object-cover grayscale-[20%] transition duration-300 hover:grayscale-0"
+      />
+    </div>
+
+    <div class="space-y-3">
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <h1 class="text-3xl font-extrabold tracking-tight md:text-4xl">
+          {about.frontmatter.name}
+        </h1>
+        {about.frontmatter.pronouns && (
+          <span class="badge badge-outline shadow-sm">
+            {about.frontmatter.pronouns}
+          </span>
+        )}
+      </div>
+      <h2 class="text-lg text-secondary md:text-xl">
+        {about.frontmatter.designation}
+      </h2>
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-secondary">
+        <div class="flex items-center gap-1">
+          <Icon name="carbon:location" aria-hidden="true" class="h-4 w-4" />
+          <p>{about.frontmatter.location}</p>
+        </div>
+        {hasWebsite && (
+          <a
+            href={website}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 underline-offset-4 transition hover:text-base-content hover:underline"
+          >
+            <Icon name="carbon:link" aria-hidden="true" class="h-4 w-4" />
+            <span>Lihat website</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </article>
+</header>

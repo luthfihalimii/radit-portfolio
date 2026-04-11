@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@config "../../tailwind.config.mjs";
+@plugin "@tailwindcss/typography";
+@plugin "daisyui" {
+  themes: lofi --default, black;
+}
+
+@plugin "daisyui/theme" {
+  name: "lofi";
+  default: true;
+  --radius-box: 1rem;
+  --radius-field: 0.5rem;
+  --radius-selector: 1.9rem;
+}
+
+@plugin "daisyui/theme" {
+  name: "black";
+  prefersdark: true;
+  --color-secondary: #e5e5e5;
+  --radius-box: 1rem;
+  --radius-field: 0.5rem;
+  --radius-selector: 1.9rem;
+}

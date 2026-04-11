@@ -1,0 +1,18 @@
+---
+import { Icon } from "astro-icon/components";
+const { title, icon, open = false } = Astro.props;
+---
+
+<details class="collapse collapse-arrow w-full border border-base-300/70 bg-base-100/80 shadow-sm" open={open}>
+  <summary class="collapse-title font-extrabold tracking-tight md:text-2xl">
+    <span class="flex items-center gap-3">
+      <Icon name={icon} aria-hidden="true" class="h-7 w-7 shrink-0" />
+      <span>{title}</span>
+    </span>
+  </summary>
+  <div class="collapse-content px-3 md:px-4">
+    <div class="pt-5 pb-3">
+      <slot />
+    </div>
+  </div>
+</details>

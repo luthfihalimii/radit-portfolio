@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+
+const { icon, url, url_name } = Astro.props;
+const hasUrl = typeof url === "string" && /^(https?:\/\/|mailto:|tel:)/.test(url);
+---
+
+{
+  hasUrl ? (
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      href={url}
+      class="btn btn-outline btn-md gap-2"
+    >
+      <Icon name={icon} aria-hidden="true" class="h-5 w-5" />
+      {url_name}
+    </a>
+  ) : (
+    <span class="btn btn-outline btn-md pointer-events-none gap-2 opacity-60">
+      <Icon name={icon} aria-hidden="true" class="h-5 w-5" />
+      {url_name}
+    </span>
+  )
+}
