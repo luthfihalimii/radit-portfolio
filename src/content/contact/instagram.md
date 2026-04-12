@@ -1,5 +1,5 @@
 ---
 title: Instagram
 icon: carbon:logo-instagram
-url: https://instagram.com/radityazcky
+url: https://www.instagram.com/raditya_2108
 ---

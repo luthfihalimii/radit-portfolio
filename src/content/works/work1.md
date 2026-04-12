@@ -1,13 +1,11 @@
 ---
-title: Eksplorasi Teknologi dan Sains
-date: 2024 - Sekarang
-url: https://www.radityazcky.my.id
+title: Anggota Aktif Marching Band
+date: 2019 - 2020
 location: Surabaya, Indonesia
 org: Pembelajaran mandiri
-tags: ["Web Development", "AI", "Problem Solving", "Riset"]
+tags: ["Ekstrakurikuler", "SDN Tanah Kali Kedinding 2/252 Surabaya", "Marching Band"]
 ---
 
-- Belajar dasar-dasar pengembangan web, mulai dari struktur halaman, styling, hingga cara menyusun konten yang mudah dibaca.
-- Mengeksplorasi tools AI dan teknologi modern untuk membantu proses belajar, riset, dan pembuatan proyek pribadi.
-- Membiasakan diri mendokumentasikan hasil belajar agar setiap eksperimen bisa dievaluasi dan diperbaiki.
-- Mengembangkan pola berpikir sistematis saat memecahkan masalah teknis maupun nonteknis.
+- Aktif mengikuti kegiatan ekstrakurikuler marching band di sekolah dasar, yang melibatkan latihan rutin dan partisipasi dalam berbagai acara sekolah.
+
+- Mempelajari keterampilan musik, koordinasi, dan kerja sama tim melalui latihan bersama anggota marching band lainnya.

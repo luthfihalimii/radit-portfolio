@@ -1,5 +1,5 @@
 ---
 title: Email
 icon: carbon:email
-url: mailto:halo@radityazcky.my.id
+url: mailto:raditnugroho2018@gmail.com
 ---

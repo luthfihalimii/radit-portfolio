@@ -1,6 +1,6 @@
 ---
-title: Anggota Aktif Libels Production
-date: 2022 - 2023
+title: Wakil Ketua Libels Production
+date: 2023 - 2025
 location: Surabaya, Indonesia
 org: Sekolah dan komunitas
 tags:
