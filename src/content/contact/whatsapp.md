@@ -1,5 +1,5 @@
 ---
 title: WhatsApp
 icon: mdi:whatsapp
-url: https://wa.me/6281234567890
+url: https://wa.me/6282132847332
 ---
