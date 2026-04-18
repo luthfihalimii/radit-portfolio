@@ -1,5 +1,5 @@
 ---
-title: Kepala Koordinator Sekretaris Sekbid 9
+title: Kepala Koordinator Sekretaris Sekbid 8
 date: 2023 - 2024
 location: Surabaya, Indonesia
 org: Sekolah dan komunitas

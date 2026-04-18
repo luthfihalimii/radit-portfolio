@@ -8,7 +8,7 @@ website: "https://www.radityazcky.my.id"
 ---
 
 Hi! Saya Raditya Zacky Nugroho, biasa dipanggil Radit atau ( Reon untuk nama band dan hiburan)
-lahir pada 21 Desember 2008. Saat ini saya pelajar kelas X di SMA Negeri 3 Surabaya.
+lahir pada 21 Desember 2008. Saat ini saya pelajar di SMA Negeri 3 Surabaya.
 
 Perjalanan pendidikan saya dimulai di SDN Tanah Kali Kedinding 2 / 252 Surabaya pada tahun 2016 hingga lulus pada 2022. Selanjutnya, saya melanjutkan ke SMP Negeri 15 Surabaya dari 2022 hingga 2025, sebelum akhirnya masuk SMA pada 2025.
 Saya adalah orang yang selalu belajar untuk sabar, tekun, dan menghargai setiap proses belajar.

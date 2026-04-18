@@ -1,11 +1,11 @@
 ---
 title: Drummer Grup Musik Threesicdent
-date: 2023 - 2025
+date: 2025 - 2026
 location: Surabaya, Indonesia
 org: Sekolah dan komunitas
 tags:
   [
-    "SMAN 15 Surabaya",
+    "SMAN 3 Surabaya",
     "Libels Production",
     "Music",
     "Creativity",
